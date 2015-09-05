@@ -14,39 +14,102 @@
 
 
 export default {
-
-  // - Boot Assets ------------------------------------------------------------
-  boot: [
-    {
-      key: 'splash-screen',
-      type: 'image',
-      url: 'splash-screen.png'
+    // - Boot Assets ------------------------------------------------------------
+    boot: [
+        {
+        key: 'splash-screen',
+        type: 'image',
+        url: 'splash-screen.png'
     },
-
     {
-      key: 'progress-bar',
-      type: 'image',
-      url: 'progress-bar.png'
+        key: 'progress-bar',
+        type: 'image',
+        url: 'progress-bar.png'
     }
-  ],
-
-  // - Game assets ------------------------------------------------------------
-  game: [
+    ],
+    // - Game assets ------------------------------------------------------------
+    game: [
     {
-      key: 'phaser',
-      type: 'image',
-      url: 'phaser.png'
+        key: 'bullet',
+        type: 'image',
+        url: 'images/bullet.png'
+    },
+    {
+        key: 'player',
+        type: 'image',
+        url: 'images/player.png'
+    },
+    {
+        key: 'enemyParticle',
+        type: 'image',
+        url: 'images/enemyParticle.png'
+    },
+    {
+        key: 'space',
+        type: 'image',
+        url: 'images/space.png'
+    },
+    {
+        //   Loads a Sprite Sheet File
+        type: 'spritesheet',
+        key: 'yellowEnemy',
+        url: 'images/yellow_enemy.png',
+        frameWidth: 50,
+        frameHeight: 46,
+        frameMax: 3,
+        margin: 1,
+        spacing: 1
+    },
+    {
+        //   Loads a Sprite Sheet File
+        type: 'spritesheet',
+        key: 'redEnemy',
+        url: 'images/red_enemy.png',
+        frameWidth: 50,
+        frameHeight: 46,
+        frameMax: 3,
+        margin: 1,
+        spacing: 1
+    },
+    {
+        //   Loads a Sprite Sheet File
+        type: 'spritesheet',
+        key: 'greenEnemy',
+        url: 'images/green_enemy.png',
+        frameWidth: 50,
+        frameHeight: 46,
+        frameMax: 3,
+        margin: 1,
+        spacing: 1
+    },
+    {
+        //   Loads a JSON File
+        type: 'json',
+        key: 'level1',
+        url: 'data/level1.json',
+        overwrite: false
+    },
+    {
+        //   Loads a JSON File
+        type: 'json',
+        key: 'level2',
+        url: 'data/level2.json',
+        overwrite: false
+    },
+    {
+        //   Loads a JSON File
+        type: 'json',
+        key: 'level3',
+        url: 'data/level3.json',
+        overwrite: false
     }
-  ],
-
-  // - Music and Sound effects ------------------------------------------------
-  audio: [
-    // // Example
-    // {
-    //   key: 'pow',
-    //   type: 'audio',
-    //   urls: [ 'pow.ogg', 'pow.m4a' ]
-    // }
-  ]
-
+    ],
+    // - Music and Sound effects ------------------------------------------------
+    audio: [
+    {
+        key: 'orchestra',
+        type: 'audio',
+        urls: [ 'audio/8bit-orchestra.ogg', 'audio/8bit-orchestra.mp3' ]
+    }
+    ]
 };
