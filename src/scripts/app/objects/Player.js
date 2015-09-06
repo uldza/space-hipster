@@ -44,6 +44,10 @@ class Player extends Phaser.Sprite {
         // Move player
         this.body.velocity.x = direction * this.PLAYER_SPEED;
     }
+
+    die()
+    {
+    }
 }
 
 

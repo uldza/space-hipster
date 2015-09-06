@@ -6,6 +6,7 @@
  */
 
 import Player from '../objects/Player';
+import PlayerBullets from '../objects/PlayerBullets';
 
 export default class Game extends Phaser.State {
     init( currentLevel )
@@ -38,12 +39,16 @@ export default class Game extends Phaser.State {
 
         // Add player
         this.player = new Player(this.game, this.game.world.centerX, this.game.world.height - 50);
+        // Add player bullets
+        this.playerBullets = new PlayerBullets(this.game, this.player);
     }
 
     update()
     {
         if( !this.game.started ) return;
         // Add game logic here
+        //this.game.physics.arcade.overlap(this.playerBullets, this.enemies, this.damageEnemy, null, this);
+        //this.game.physics.arcade.overlap(this.enemyBullets, this.player, this.player.die, null, this);
     }
 
     startGame()
@@ -54,4 +59,10 @@ export default class Game extends Phaser.State {
 
         this.game.started = true;
     }
+
+    damageEnemy()
+    {
+    }
+
+
 }
