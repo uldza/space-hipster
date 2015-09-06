@@ -6,6 +6,7 @@
  */
 
 import Player from '../objects/Player';
+import Enemy from '../objects/Enemy';
 import PlayerBullets from '../objects/PlayerBullets';
 
 export default class Game extends Phaser.State {
@@ -41,6 +42,9 @@ export default class Game extends Phaser.State {
         this.player = new Player(this.game, this.game.world.centerX, this.game.world.height - 50);
         // Add player bullets
         this.playerBullets = new PlayerBullets(this.game, this.player);
+
+        //load level
+        this.loadLevel();
     }
 
     update()
@@ -57,12 +61,82 @@ export default class Game extends Phaser.State {
         this.tapToStart.destroy();
         this.background.inputEnabled = false;
 
+        this.playerBullets.start();
+
+        // Create enemy group
+        this.enemies = this.add.group();
+        this.enemies.enableBody = true;
+
+        this.startLevelTimer();
+
+        this.scheduleNextEnemy();
+
         this.game.started = true;
     }
 
-    damageEnemy()
+    loadLevel()
     {
+        this.currentEnemyIndex = 0;
+        this.levelData = this.game.cache.getJSON('level' + this.currentLevel);
     }
 
+    startLevelTimer()
+    {
+        //end of the level timer
+        this.endOfLevelTimer = this.game.time.events.add(this.levelData.duration * 1000, () => {
+            console.log('level ended!');
+
+            this.orchestra.stop();
+
+            if(this.currentLevel < this.numLevels)
+            {
+                this.currentLevel++;
+            }
+            else
+            {
+                this.currentLevel = 1;
+            }
+
+            this.game.state.start('GameState', true, false, this.currentLevel);
+        }, this);
+    }
+
+    createEnemy(x, y, health, key, scale, speedX, speedY)
+    {
+        let enemy = this.enemies.getFirstExists(false);
+
+        if(!enemy)
+        {
+            enemy = new Enemy(this.game, x, y, key, health);
+            this.enemies.add(enemy);
+        }
+
+        enemy.reset(x, y, health, key, scale, speedX, speedY);
+    }
+
+    scheduleNextEnemy()
+    {
+        let nextEnemy = this.levelData.enemies[this.currentEnemyIndex];
+
+        console.log(nextEnemy);
+
+        if(nextEnemy)
+        {
+            let nextTime = 1000 * ( nextEnemy.time - (this.currentEnemyIndex == 0 ? 0 : this.levelData.enemies[this.currentEnemyIndex - 1].time));
+
+            this.nextEnemyTimer = this.game.time.events.add(nextTime, () => {
+                this.createEnemy(nextEnemy.x * this.game.world.width, -100, nextEnemy.health, nextEnemy.key, nextEnemy.scale, nextEnemy.speedX, nextEnemy.speedY);
+
+                this.currentEnemyIndex++;
+                this.scheduleNextEnemy();
+            }, this);
+        }
+    }
+
+    damageEnemy(bullet, enemy)
+    {
+        enemy.damage(1);
+        bullet.kill();
+    }
 
 }

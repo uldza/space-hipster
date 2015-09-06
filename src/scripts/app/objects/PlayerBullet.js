@@ -1,14 +1,5 @@
+import Bullet from './Bullet';
 
-class PlayerBullet extends Phaser.Sprite {
-    constructor (game, x, y)
-    {
-        super(game, x, y, 'bullet');
-
-        this.anchor.setTo(0.5);
-        this.checkWorldBounds = true;
-        this.outOfBoundsKill = true;
-    }
-}
-
+class PlayerBullet extends Bullet {}
 
 export default PlayerBullet;

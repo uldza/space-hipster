@@ -47,6 +47,9 @@ class Player extends Phaser.Sprite {
 
     die()
     {
+        this.kill();
+        this.orchestra.stop();
+        this.game.state.start('GameState');
     }
 }
 

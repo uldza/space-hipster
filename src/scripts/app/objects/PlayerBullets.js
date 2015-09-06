@@ -8,8 +8,6 @@ class PlayerBullets extends Phaser.Group {
 
         this.player = player;
 
-        this.shootingTimer = this.game.time.events.loop(Phaser.Timer.SECOND/5, this.shoot, this);
-
         this.game.add.existing( this );
     }
 
@@ -31,6 +29,11 @@ class PlayerBullets extends Phaser.Group {
 
         //set velocity
         bullet.body.velocity.y = this.player.BULLET_SPEED;
+    }
+
+    start()
+    {
+        this.shootingTimer = this.game.time.events.loop(Phaser.Timer.SECOND/5, this.shoot, this);
     }
 }
 
