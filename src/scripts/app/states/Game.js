@@ -5,6 +5,7 @@
  * A sample Game state, displaying the Phaser logo.
  */
 
+import Player from '../objects/Player';
 
 export default class Game extends Phaser.State {
     init( currentLevel )
@@ -12,8 +13,6 @@ export default class Game extends Phaser.State {
         //level data
         this.numLevels = 3;
         this.currentLevel = currentLevel ? currentLevel : 1;
-        console.log('current level:' + this.currentLevel);
-
         this.game.started = false;
     }
 
@@ -30,11 +29,15 @@ export default class Game extends Phaser.State {
         this.orchestra = this.add.audio('orchestra');
         this.orchestra.play();
 
+        // Level start texts
         this.levelText = this.game.add.text(this.game.world.centerX, this.game.world.centerY, 'LEVEL ' + this.currentLevel, { font: '30px Verdana', fill: '#fff' });
         this.levelText.anchor.setTo(0.5);
 
         this.tapToStart = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 200, 'tap to start the game', { font: '18px Verdana', fill: '#fff' });
         this.tapToStart.anchor.setTo(0.5);
+
+        // Add player
+        this.player = new Player(this.game, this.game.world.centerX, this.game.world.height - 50);
     }
 
     update()
@@ -47,6 +50,7 @@ export default class Game extends Phaser.State {
     {
         this.levelText.destroy();
         this.tapToStart.destroy();
+        this.background.inputEnabled = false;
 
         this.game.started = true;
     }
