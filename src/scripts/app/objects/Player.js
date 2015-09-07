@@ -45,11 +45,11 @@ class Player extends Phaser.Sprite {
         this.body.velocity.x = direction * this.PLAYER_SPEED;
     }
 
-    die()
+    die(player, bullet)
     {
-        this.kill();
+        player.kill();
         this.orchestra.stop();
-        this.game.state.start('GameState');
+        this.game.state.start('Game');
     }
 }
 

@@ -1,9 +1,8 @@
 
 import EnemyBullet from './EnemyBullet';
-import EnemyBullets from './EnemyBullets';
 
 class Enemy extends Phaser.Sprite {
-    constructor(game, x, y, key, health)
+    constructor(game, x, y, key, health, bullets)
     {
         super(game, x, y, key);
 
@@ -11,12 +10,17 @@ class Enemy extends Phaser.Sprite {
         this.anchor.setTo(0.5);
         this.health = health;
 
-        this.enemyBullets = new EnemyBullets(this.game);
+        this.game.physics.arcade.enable(this);
+
+        this.enemyBullets = bullets;
 
         this.enemyTimer = this.game.time.create(false);
+
         this.enemyTimer.start();
 
         this.scheduleShooting();
+
+        this.game.add.existing( this );
     }
 
     update()
@@ -61,7 +65,7 @@ class Enemy extends Phaser.Sprite {
 
     reset(x, y, health, key, scale, speedX, speedY)
     {
-        super.reset(this, x, y, health);
+        super.reset(x, y, health);
         this.loadTexture(key);
         this.scale.setTo(scale);
         this.body.velocity.x = speedX;

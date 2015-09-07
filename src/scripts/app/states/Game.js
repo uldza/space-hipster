@@ -8,6 +8,7 @@
 import Player from '../objects/Player';
 import Enemy from '../objects/Enemy';
 import PlayerBullets from '../objects/PlayerBullets';
+import EnemyBullets from '../objects/EnemyBullets';
 
 export default class Game extends Phaser.State {
     init( currentLevel )
@@ -43,6 +44,12 @@ export default class Game extends Phaser.State {
         // Add player bullets
         this.playerBullets = new PlayerBullets(this.game, this.player);
 
+        // Create enemy group
+        this.enemies = this.add.group();
+        this.enemies.enableBody = true;
+
+        this.enemyBullets = new EnemyBullets(this.game);
+
         //load level
         this.loadLevel();
     }
@@ -51,8 +58,8 @@ export default class Game extends Phaser.State {
     {
         if( !this.game.started ) return;
         // Add game logic here
-        //this.game.physics.arcade.overlap(this.playerBullets, this.enemies, this.damageEnemy, null, this);
-        //this.game.physics.arcade.overlap(this.enemyBullets, this.player, this.player.die, null, this);
+        this.game.physics.arcade.overlap(this.playerBullets, this.enemies, this.damageEnemy, null, this);
+        this.game.physics.arcade.overlap(this.enemyBullets, this.player, this.player.die, null, this);
     }
 
     startGame()
@@ -62,10 +69,6 @@ export default class Game extends Phaser.State {
         this.background.inputEnabled = false;
 
         this.playerBullets.start();
-
-        // Create enemy group
-        this.enemies = this.add.group();
-        this.enemies.enableBody = true;
 
         this.startLevelTimer();
 
@@ -97,7 +100,7 @@ export default class Game extends Phaser.State {
                 this.currentLevel = 1;
             }
 
-            this.game.state.start('GameState', true, false, this.currentLevel);
+            this.game.state.start('Game', true, false, this.currentLevel);
         }, this);
     }
 
@@ -107,7 +110,7 @@ export default class Game extends Phaser.State {
 
         if(!enemy)
         {
-            enemy = new Enemy(this.game, x, y, key, health);
+            enemy = new Enemy(this.game, x, y, key, health, this.enemyBullets);
             this.enemies.add(enemy);
         }
 
@@ -117,8 +120,6 @@ export default class Game extends Phaser.State {
     scheduleNextEnemy()
     {
         let nextEnemy = this.levelData.enemies[this.currentEnemyIndex];
-
-        console.log(nextEnemy);
 
         if(nextEnemy)
         {
@@ -138,5 +139,4 @@ export default class Game extends Phaser.State {
         enemy.damage(1);
         bullet.kill();
     }
-
 }
